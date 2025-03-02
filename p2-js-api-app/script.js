@@ -1,6 +1,6 @@
 // API configuration
 const API_URL =
-  "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent";
 
 // Available topics for question generation
 const topics = [
