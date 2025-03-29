@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-const API_KEY = "a15a73da848c421ba6f93401252603";
+const API_KEY = "";
 
 function WeatherWidget() {
   const [weather, SetWeather] = useState(0);
@@ -12,13 +12,18 @@ function WeatherWidget() {
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
       try {
-        const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
-        const response = await fetch(URL);
+        const response = await fetch("/.netlify/functions/fetchAPIKey");
+        if (!response.ok) {
+          throw new Error("Failed to fetch API key");
+        }
         const data = await response.json();
+        API_KEY = data.apiKey;
         SetWeather(data.current);
         setLocation(data.location.name);
+        console.log("API Key fetched successfully");
       } catch (error) {
-        console.error(`Error fetching data`, error);
+        console.error("Error fetching API key", error);
+        alert("Failed to load API configuration.");
       }
     };
 
