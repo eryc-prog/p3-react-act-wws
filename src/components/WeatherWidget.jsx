@@ -9,10 +9,15 @@ function WeatherWidget() {
   const [location, setLocation] = useState("Loading...");
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
+  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+  const BASE_URL = "https://api.weatherapi.com/v1";
+
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
       try {
-        const response = await fetch("/.netlify/functions/fetchAPIKey");
+        const response = await fetch(
+          `${BASE_URL}/current.json?key=${API_KEY}&q=${latitude},${longitude}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch API key");
         }
