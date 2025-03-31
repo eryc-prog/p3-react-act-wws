@@ -70,6 +70,14 @@ function WeatherWidget() {
     return true;
   }
 
+  // Initialize the app
+  document.addEventListener("DOMContentLoaded", async () => {
+    await getAPIKey(); // Fetch API key when app loads
+    if (checkConfig()) {
+      fetchLocationWeather();
+    }
+  });
+
   return (
     <div
       className="bg-center p-4 rounded-lg shadow-md ml-4 mr-4 text-white"
