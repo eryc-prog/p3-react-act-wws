@@ -60,6 +60,16 @@ function WeatherWidget() {
     return <p>Loading...</p>;
   }
 
+  // Function to check API configuration //TRIALL//
+  function checkConfig() {
+    if (API_KEY) {
+      console.error("API key is not available");
+      alert("Application is not properly configured.");
+      return false;
+    }
+    return true;
+  }
+
   return (
     <div
       className="bg-center p-4 rounded-lg shadow-md ml-4 mr-4 text-white"
