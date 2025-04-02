@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-const API_KEY = "a15a73da848c421ba6f93401252603";
-
 function WeatherWidget({ isSidebarCollapsed }) {
   const [weather, SetWeather] = useState(0);
   const [location, setLocation] = useState("Loading...");
@@ -12,14 +10,21 @@ function WeatherWidget({ isSidebarCollapsed }) {
   useEffect(() => {
     const fetchData = async (latitude, longitude) => {
       try {
-        const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
-        const response = await fetch("/netlify/functions/fetchAPIKey.js");
+        const response = await fetch("/.netlify/functions/fetchAPIKey");
         const data = await response.json();
-        SetWeather(data.current);
-        setLocation(data.location.name);
         console.log(data);
       } catch (error) {
         console.error("Error calling function", error);
+      }
+
+      try {
+        const URL = `https://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${latitude},${longitude}`;
+        const response = await fetch(URL);
+        const data = await response.json();
+        SetWeather(data.current);
+        setLocation(data.location.name);
+      } catch (error) {
+        console.error(`Error fetching data`, error);
       }
     };
 
