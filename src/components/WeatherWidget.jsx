@@ -13,7 +13,7 @@ function WeatherWidget({ isSidebarCollapsed }) {
     const fetchData = async (latitude, longitude) => {
       try {
         const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
-        const response = await fetch("/netlify/functions/fetchAPIKey.cjs, URL");
+        const response = await fetch("/netlify/functions/fetchAPIKey.js");
         const data = await response.json();
         SetWeather(data.current);
         setLocation(data.location.name);
