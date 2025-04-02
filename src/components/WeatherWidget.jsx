@@ -18,7 +18,7 @@ function WeatherWidget({ isSidebarCollapsed }) {
       }
 
       try {
-        const URL = `https://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${latitude},${longitude}`;
+        const URL = `https://api.weatherapi.com/v1/current.json?&q=${latitude},${longitude}`;
         const response = await fetch(URL);
         const data = await response.json();
         SetWeather(data.current);
