@@ -2,33 +2,24 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-const API_KEY = "";
+const API_KEY = "a15a73da848c421ba6f93401252603";
 
-function WeatherWidget() {
+function WeatherWidget({ isSidebarCollapsed }) {
   const [weather, SetWeather] = useState(0);
   const [location, setLocation] = useState("Loading...");
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
-  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-  const BASE_URL = "https://api.weatherapi.com/v1";
-
   useEffect(() => {
-    const fetchWeather = async (latitude, longitude) => {
+    const fetchData = async (latitude, longitude) => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/current.json?key=${API_KEY}&q=${latitude},${longitude}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch API key");
-        }
+        const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
+        const response = await fetch("/netlify/functions/fetchAPIKey.cjs, URL");
         const data = await response.json();
-        API_KEY = data.apiKey;
         SetWeather(data.current);
         setLocation(data.location.name);
-        console.log("API Key fetched successfully");
+        console.log(data);
       } catch (error) {
-        console.error("Error fetching API key", error);
-        alert("Failed to load API configuration.");
+        console.error("Error calling function", error);
       }
     };
 
@@ -67,17 +58,21 @@ function WeatherWidget() {
 
   return (
     <div
-      className="bg-center p-4 rounded-lg shadow-md ml-4 mr-4 text-white"
+      className={`transition-all duration-300 ${
+        isSidebarCollapsed ? "ml-auto" : "ml-auto"
+      } bg-center text-white p-4 rounded-lg shadow-md mt-4 mx-auto`}
       style={{ backgroundImage: `url(${capti})` }}
     >
-      <h3 className="mt-4 text-lg font-semibold float-right">
+      <h3 className="text-sm md:text-lg lg:text-xl font-semibold float-right">
         Philippine Standard Time: {time}
       </h3>
-      <h2 className="text-xl font-bold">Current Weather in {location}</h2>
-      <p>
+      <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-left">
+        Current Weather in {location}
+      </h2>
+      <p className="text-sm md:text-base lg:text-lg text-left">
         {weather.temp_c}°C | {weather.condition.text}
       </p>
-      <p>
+      <p className="text-sm md:text-base lg:text-lg text-left">
         Humidity: {weather.humidity}% | Wind: {weather.wind_kph} km/h
       </p>
     </div>

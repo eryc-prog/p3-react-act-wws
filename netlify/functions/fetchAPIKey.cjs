@@ -1,6 +1,7 @@
-exports.handler = async function () {
+exports.handler = async function (event, context) {
+  const apiKey = process.env.API_KEY;
   return {
     statusCode: 200,
-    body: JSON.stringify({ apiKey: process.env.REACT_APP_API_KEY }), // Ensure API_KEY is set in Netlify environment variables
+    body: JSON.stringify({ message: "This is from your netlify functions!" }), // Message
   };
 };
