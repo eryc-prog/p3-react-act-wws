@@ -10,7 +10,7 @@ function WeatherWidget({ isSidebarCollapsed }) {
   useEffect(() => {
     const fetchData = async (latitude, longitude) => {
       try {
-        const response = await fetch("/.netlify/functions/fetchAPIKey");
+        const response = await fetch("/netlify/functions/fetchAPIKey");
         const data = await response.json();
         console.log(data);
       } catch (error) {
