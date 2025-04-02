@@ -28,16 +28,16 @@ function WeatherWidget({ isSidebarCollapsed }) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-            fetchWeather(latitude, longitude);
+            fetchData(latitude, longitude);
           },
           (error) => {
             console.error(`Error getting location`, error);
-            fetchWeather("auto:ip");
+            fetchData("auto:ip");
           }
         );
       } else {
         console.error(`Geolocation is not supported by this browser`, error);
-        fetchWeather("aouto:ip");
+        fetchData("aouto:ip");
       }
     };
 
