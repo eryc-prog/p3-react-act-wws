@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-let API_KEY = "";
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 function WeatherWidget({ isSidebarCollapsed }) {
   const [weather, SetWeather] = useState(0);
