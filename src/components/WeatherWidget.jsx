@@ -12,22 +12,21 @@ function WeatherWidget({ isSidebarCollapsed }) {
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
       try {
-        const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
-        const response = await fetch(URL);
+        const apiKey = process.env.REACT_APP_API_KEY;
+        if (!apiKey) {
+          throw new Error("API Key is not defined in environment variables");
+        }
+
+        const response = await fetch(
+          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch weather data");
+        }
+
         const data = await response.json();
         SetWeather(data.current);
         setLocation(data.location.name);
-      } catch (error) {
-        console.error(`Error fetching data`, error);
-      }
-
-      try {
-        const response = await fetch("/.netlify/functions/fetchAPIKey");
-        if (!response.ok) {
-          throw new Error("Failed to fetch API Key");
-        }
-        const data = await response.json();
-        API_KEY = data.apiKey;
         console.log("API Key fetched successfully");
       } catch (error) {
         console.error("Error fetching API Key:", error);
