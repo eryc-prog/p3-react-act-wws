@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-const API_KEY = "fda5a74be046418d8a803244250304";
+let API_KEY = "";
 
 function WeatherWidget({ isSidebarCollapsed }) {
   const [weather, SetWeather] = useState(0);
@@ -19,6 +19,19 @@ function WeatherWidget({ isSidebarCollapsed }) {
         setLocation(data.location.name);
       } catch (error) {
         console.error(`Error fetching data`, error);
+      }
+
+      try {
+        const response = await fetch("/.netlify/functions/fetchAPIKey");
+        if (!response.ok) {
+          throw new Error("Failed to fetch API Key");
+        }
+        const data = await response.json();
+        API_KEY = data.apiKey;
+        console.log("API Key fetched successfully");
+      } catch (error) {
+        console.error("Error fetching API Key:", error);
+        alert("Failed to load API configuration.");
       }
     };
 
