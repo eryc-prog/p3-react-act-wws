@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 const BASE_URL = `https://api.weatherapi.com/v1/current.json`;
 
 function WeatherWidget({ isSidebarCollapsed }) {
