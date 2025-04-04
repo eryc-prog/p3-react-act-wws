@@ -2,31 +2,23 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
-const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-const BASE_URL = `https://api.weatherapi.com/v1/current.json`;
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 function WeatherWidget({ isSidebarCollapsed }) {
-  const [weather, SetWeather] = useState(0);
+  const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState("Loading...");
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
       try {
-        const response = await fetch(
-          `${BASE_URL}?key=${API_KEY}&q=${latitude},${longitude}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch weather data");
-        }
-
+        const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
+        const response = await fetch(URL);
         const data = await response.json();
-        SetWeather(data.current);
+        setWeather(data.current);
         setLocation(data.location.name);
-        console.log("API Key fetched successfully");
       } catch (error) {
-        console.error("Error fetching API Key:", error);
-        alert("Failed to load API configuration.");
+        console.error("Error fetching weather data:", error);
       }
     };
 
@@ -38,20 +30,19 @@ function WeatherWidget({ isSidebarCollapsed }) {
             fetchWeather(latitude, longitude);
           },
           (error) => {
-            console.error(`Error getting location`, error);
+            console.error("Geolocation error:", error);
             fetchWeather("auto:ip");
           }
         );
       } else {
-        console.error(`Geolocation is not supported by this browser`, error);
-        fetchWeather("aouto:ip");
+        console.error("Geolocation not supported.");
+        fetchWeather("auto:ip");
       }
     };
 
     fetchLocationWeather();
   }, []);
 
-  //For the time
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
