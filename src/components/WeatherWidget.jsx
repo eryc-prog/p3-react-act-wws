@@ -12,14 +12,14 @@ function WeatherWidget({ isSidebarCollapsed }) {
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
       try {
-        const apiKey = process.env.REACT_APP_API_KEY;
+        const API_KEY = process.env.REACT_APP_API_KEY;
         console.log("API Key:", process.env.REACT_APP_API_KEY);
-        if (!apiKey) {
+        if (!API_KEY) {
           throw new Error("API Key is not defined in environment variables");
         }
 
         const response = await fetch(
-          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`
+          `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch weather data");
