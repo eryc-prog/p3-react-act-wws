@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import wet from "/src/assets/wet.avif";
+import waateere from "/src/assets/waateere.jpg";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -11,16 +11,17 @@ function LandingPage() {
 
   return (
     <div
-      className="bg-cover h-screen"
-      style={{ backgroundImage: `url(${wet})` }}
+      className="h-screen w-full bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${waateere})` }}
     >
-      <div className="flex flex-col items-center justify-center h-screen p-auto m-auto">
-        <h1 className="text-4xl font-bold mb-4 text-white">
+      <div className="flex flex-col items-center justify-center h-screen p-auto m-auto text-center">
+        <h1 className="font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
           Bugaan West Waterworks & Sanitation Association Inc.
         </h1>
-        <p className="text-lg mb-6 text-white">
+        <p className="mb-6 text-white text-xl sm:text-3xl md:text-4xl lg:text-5xl">
           Data and Billing management system
         </p>
+
         <button
           onClick={handleNavigate}
           className="px-6 py-3 bg-sky-800 text-white rounded-lg hover:bg-sky-900 font-semibold shadow-md"

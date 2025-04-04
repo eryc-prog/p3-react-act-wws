@@ -2,23 +2,17 @@ import { useState, useEffect } from "react";
 import capti from "/src/assets/capti.jpg";
 import React from "react";
 
+const API_KEY = "fda5a74be046418d8a803244250304";
+
 function WeatherWidget({ isSidebarCollapsed }) {
   const [weather, SetWeather] = useState(0);
   const [location, setLocation] = useState("Loading...");
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
-    const fetchData = async (latitude, longitude) => {
+    const fetchWeather = async (latitude, longitude) => {
       try {
-        const response = await fetch("/netlify/functions/fetchAPIKey");
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error("Error calling function", error);
-      }
-
-      try {
-        const URL = `https://api.weatherapi.com/v1/current.json?&q=${latitude},${longitude}`;
+        const URL = ` http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
         const response = await fetch(URL);
         const data = await response.json();
         SetWeather(data.current);
@@ -33,16 +27,16 @@ function WeatherWidget({ isSidebarCollapsed }) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-            fetchData(latitude, longitude);
+            fetchWeather(latitude, longitude);
           },
           (error) => {
             console.error(`Error getting location`, error);
-            fetchData("auto:ip");
+            fetchWeather("auto:ip");
           }
         );
       } else {
         console.error(`Geolocation is not supported by this browser`, error);
-        fetchData("aouto:ip");
+        fetchWeather("aouto:ip");
       }
     };
 

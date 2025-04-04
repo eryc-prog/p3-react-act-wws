@@ -9,11 +9,12 @@ import SettingsPage from "./pages/SettingsPage";
 import LandingPage from "./pages/LandingPage";
 import Home from "./pages/Home";
 import { useLocation } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 function App() {
   const location = useLocation();
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // State to track sidebar collapse
 
   const showSidebar = [
     "/home",
@@ -26,14 +27,25 @@ function App() {
   ].includes(location.pathname);
 
   return (
-    <div className="flex bg-blue-50">
+    <div className="flex bg-blue-50 h-screen">
       {showSidebar && (
-        <div className="w-64">
-          <Sidebar />
+        <div
+          className={`${
+            isSidebarCollapsed ? "w-20" : "w-64"
+          } transition-all duration-300`}
+        >
+          <Sidebar
+            isCollapsed={isSidebarCollapsed}
+            onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          />
         </div>
       )}
 
-      <div className="flex-1">
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarCollapsed ? "ml-auto" : "ml-auto"
+        }`}
+      >
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<Home />} />

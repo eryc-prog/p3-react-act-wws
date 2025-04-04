@@ -11,6 +11,8 @@ function BillingPage() {
   const [records, setRecords] = useState(
     JSON.parse(localStorage.getItem("billingRecords")) || []
   );
+  const [isEditing, setIsEditing] = useState(false); // Track if editing
+  const [editIndex, setEditIndex] = useState(null);
 
   const handleCalculate = () => {
     if (!name || !month || !previousReading || !presentReading) {
@@ -30,12 +32,46 @@ function BillingPage() {
     const bill = usage * 20; // Multiply by 20 to calculate the total bill
     setTotalBill(bill);
 
-    // const isDuplicate = records.some(
-    //   (record) => record.name.toLowerCase() === newRecords.toLowerCase()
-    // );
-    // console.log(isDuplicate);
+    const newRecord = { name, month, previous, present, usage, bill, date };
 
-    // const isDuplicated = records.find((record) => record.name.toLowerCase);
+    if (isEditing) {
+      // Update the existing record
+      const updatedRecords = [...records];
+      updatedRecords[editIndex] = newRecord;
+      setRecords(updatedRecords);
+      localStorage.setItem("billingRecords", JSON.stringify(updatedRecords));
+      setIsEditing(false);
+      setEditIndex(null);
+    } else {
+      // Add a new record
+      const updatedRecords = [...records, newRecord];
+      setRecords(updatedRecords);
+      localStorage.setItem("billingRecords", JSON.stringify(updatedRecords));
+    }
+
+    // Clear the form
+    setName("");
+    setMonth("");
+    setPreviousReading("");
+    setPresentReading("");
+    setTotalBill(null);
+  };
+
+  const handleDelete = (index) => {
+    const updatedRecords = records.filter((_, i) => i !== index);
+    setRecords(updatedRecords);
+    localStorage.setItem("billingRecords", JSON.stringify(updatedRecords));
+  };
+
+  const handleEdit = (index) => {
+    const record = records[index];
+    setName(record.name);
+    setMonth(record.month);
+    setPreviousReading(record.previous);
+    setPresentReading(record.present);
+    setTotalBill(record.bill);
+    setIsEditing(true);
+    setEditIndex(index);
 
     useEffect(() => {
       const day = setDay(() => {
@@ -52,9 +88,11 @@ function BillingPage() {
   };
 
   return (
-    <div className="p-auto m-auto max-w-7xl text-center">
-      <h1 className="text-3xl font-bold mb-4 ">Billing</h1>
-      <p className="mb-6">View and manage your water bills.</p>
+    <div className="container mx-auto p-4 text-center">
+      <h1 className="font-bold text-lg sm:text-xl md:text-2xl">Billing</h1>
+      <p className="text-lg sm:text-xl md:text-2xl lg:text-3x1 mb-6">
+        View and manage your water bills.
+      </p>
 
       <div className="mb-4">
         <label className="block mb-2 font-semibold">Name:</label>
@@ -104,7 +142,7 @@ function BillingPage() {
         onClick={handleCalculate}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
-        Calculate Bill
+        {isEditing ? "Update Bill" : "Calculate Bill"}
       </button>
 
       {totalBill !== null && (
@@ -149,7 +187,21 @@ function BillingPage() {
                     {record.usage} m³
                   </td>
                   <td className="border border-gray-300 p-2">₱{record.bill}</td>
-                  <td className="border border-gray-300 p-2">{date}</td>
+                  <td className="border border-gray-300 p-2">{record.date}</td>
+                  <td className="border border-gray-300 p-2">
+                    <button
+                      onClick={() => handleEdit(index)}
+                      className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
