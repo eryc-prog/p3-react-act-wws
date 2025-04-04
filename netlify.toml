@@ -1,6 +1,7 @@
-[build]
+[dist]
   command = "npm run build"
-  publish = "build"
+  publish = "dist"
+  functions = "netlify/functions"
 
 [context.production.environment]
   # These are example values - DO NOT commit real API keys to this file
