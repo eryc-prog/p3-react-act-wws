@@ -13,6 +13,7 @@ function WeatherWidget({ isSidebarCollapsed }) {
     const fetchWeather = async (latitude, longitude) => {
       try {
         const apiKey = process.env.REACT_APP_API_KEY;
+        console.log("API Key:", process.env.REACT_APP_API_KEY);
         if (!apiKey) {
           throw new Error("API Key is not defined in environment variables");
         }
