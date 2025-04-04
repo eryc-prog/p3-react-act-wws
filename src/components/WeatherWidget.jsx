@@ -12,7 +12,7 @@ function WeatherWidget({ isSidebarCollapsed }) {
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
       try {
-        const URL = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
+        const URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}`;
         const response = await fetch(URL);
         const data = await response.json();
         SetWeather(data.current);
