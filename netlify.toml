@@ -4,6 +4,4 @@
   functions = "netlify/functions"
 
 [context.production.environment]
-  # These are example values - DO NOT commit real API keys to this file
-  # Add placeholders here and set actual values in Netlify dashboard
   REACT_APP_WEATHER_API_KEY = "Dont commit API Key"

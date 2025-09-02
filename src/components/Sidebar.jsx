@@ -16,7 +16,7 @@ function Sidebar({ isCollapsed, onToggle }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const toggleMobileSidebar = () => {
-    setIsMobileOpen(!isMobileOpen); // Toggle mobile sidebar visibility
+    setIsMobileOpen(!isMobileOpen); // For mobile sidebar toggle
   };
 
   return (
